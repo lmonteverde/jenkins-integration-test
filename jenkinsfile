@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    environment {
+        POSTMAN_API_KEY = 'PMAT-01HEWT0J6H22HWG6P0TPK0WXRA'
+    }
 
     stages {
         stage('Run Postman Collection') {
@@ -10,7 +14,7 @@ pipeline {
                     sh 'newman -v'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=PMAT-01HEWT0J6H22HWG6P0TPK0WXRA --reporters cli,htmlextra'
+                    sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.POSTMAN_API_KEY} --reporters cli,htmlextra'
                 }
             }
         }
@@ -37,7 +41,6 @@ pipeline {
         }
 
         failure {
-            // Puedes agregar acciones adicionales para el caso de falla
             echo 'Postman collection run failed!'
         }
     }
