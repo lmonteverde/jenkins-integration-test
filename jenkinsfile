@@ -3,22 +3,23 @@ pipeline {
     
     environment {
         JK_PM_API_KEY = credentials('JK_PM_API_KEY')
+        SYSTEM_PROPS = 'hudson.model.DirectoryBrowserSupport.CSP='
     }
 
     stages {
         stage('Run Postman Collection') {
             steps {
                 script {
-                    // Habilita estilos y scripts en line en el reporte
-                    System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
+                    // Establece la propiedad como variable de entorno
+                    withEnv(['SYSTEM_PROPS=${env.SYSTEM_PROPS}']) {
+                        // Imprime las versiones de Node.js y Newman
+                        sh 'node -v'
+                        sh 'newman -v'
+                        sh 'rm -f newman/API_Testing-*.html || true'
 
-                    // Imprime las versiones de Node.js y Newman
-                    sh 'node -v'
-                    sh 'newman -v'
-                    sh 'rm -f newman/API_Testing-*.html || true'
-
-                    // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
+                        // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
+                        sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
+                    }
                 }
             }
         }
@@ -29,7 +30,7 @@ pipeline {
             // Archiva los resultados del reporter HTML Extra
             archiveArtifacts artifacts: 'newman/**/*', allowEmptyArchive: true
         }
-
+https://github.com/lmonteverde/jenkins-integration-test/blob/main/jenkinsfile
         success {
             // Publica los informes HTML en Jenkins
             publishHTML([
