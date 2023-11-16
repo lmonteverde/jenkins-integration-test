@@ -10,16 +10,13 @@ pipeline {
         stage('Run Postman Collection') {
             steps {
                 script {
-                    // Establece la propiedad como variable de entorno
-                    withEnv(['SYSTEM_PROPS=${env.SYSTEM_PROPS}']) {
-                        // Imprime las versiones de Node.js y Newman
-                        sh 'node -v'
-                        sh 'newman -v'
-                        sh 'rm -f newman/API_Testing-*.html || true'
+                    // Imprime las versiones de Node.js y Newman
+                    sh 'node -v'
+                    sh 'newman -v'
+                    sh 'rm -f newman/API_Testing-*.html || true'
 
-                        // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                        sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
-                    }
+                    // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
+                    sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
                 }
             }
         }
@@ -30,7 +27,7 @@ pipeline {
             // Archiva los resultados del reporter HTML Extra
             archiveArtifacts artifacts: 'newman/**/*', allowEmptyArchive: true
         }
-https://github.com/lmonteverde/jenkins-integration-test/blob/main/jenkinsfile
+
         success {
             // Publica los informes HTML en Jenkins
             publishHTML([
@@ -47,6 +44,15 @@ https://github.com/lmonteverde/jenkins-integration-test/blob/main/jenkinsfile
 
         failure {
             echo 'Postman collection run failed!'
+        }
+
+        // Nuevo paso al final del pipeline
+        script {
+            // Establece la propiedad como variable de entorno
+            withEnv(['SYSTEM_PROPS=${env.SYSTEM_PROPS}']) {
+                // Tu script específico
+                sh 'echo "Tu script específico"'
+            }
         }
     }
 }
