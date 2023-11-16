@@ -1,31 +1,48 @@
-post {
-    always {
-        // Archiva los resultados del reporter HTML Extra
-        archiveArtifacts artifacts: 'newman/**/*', allowEmptyArchive: true
+pipeline {
+    agent any
+    
+    environment {
+        JK_PM_API_KEY = credentials('JK_PM_API_KEY')
     }
 
-    success {
-        // Publica los informes HTML en Jenkins
-        publishHTML([
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'newman',
-            reportFiles: 'API_Testing-*.html',
-            reportName: 'Postman Collection Report'
-        ])
+    stages {
+        stage('Run Postman Collection') {
+            steps {
+                script {
+                    // Imprime las versiones de Node.js y Newman
+                    sh 'node -v'
+                    sh 'newman -v'
+                    sh 'rm -f newman/API_Testing-*.html || true'
 
-        echo 'Postman collection run successful!'
+                    // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
+                    sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
+                }
+            }
+        }
     }
 
-    failure {
-        echo 'Postman collection run failed!'
-    }
+    post {
+        always {
+            // Archiva los resultados del reporter HTML Extra
+            archiveArtifacts artifacts: 'newman/**/*', allowEmptyArchive: true
+        }
 
-    // Nuevo paso al final del pipeline
-    // Establece la propiedad como variable de entorno
-    withEnv(['SYSTEM_PROPS=${env.SYSTEM_PROPS}']) {
-        // Tu script específico
-        sh 'echo "Tu script específico"'
+        success {
+            // Publica los informes HTML en Jenkins
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'newman',
+                reportFiles: 'API_Testing-*.html',
+                reportName: 'Postman Collection Report'
+            ])
+
+            echo 'Postman collection run successful!'
+        }
+
+        failure {
+            echo 'Postman collection run failed!'
+        }
     }
 }
