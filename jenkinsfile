@@ -2,7 +2,8 @@ pipeline {
     agent any
     
     environment {
-        POSTMAN_API_KEY = 'PMAT-01HEWT0J6H22HWG6P0TPK0WXRA'
+        // POSTMAN_API_KEY = 'PMAT-01HEWT0J6H22HWG6P0TPK0WXRA'
+        POSTMAN_API_KEY = 'JK_PM_API_KEY'
     }
 
     stages {
