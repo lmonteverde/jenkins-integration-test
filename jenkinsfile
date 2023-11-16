@@ -12,8 +12,8 @@ pipeline {
                     // Imprime las versiones de Node.js y Newman
                     sh 'node -v'
                     sh 'newman -v'
-                    sh 'rm report.html'
-                    sh 'rm API_Testing-*.html'
+                    sh 'rm newman/report.html'
+                    sh 'rm newman/API_Testing-*.html'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
                     sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
