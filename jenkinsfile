@@ -14,7 +14,7 @@ pipeline {
                     sh 'newman -v'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra --reporter-htmlextra-export ./newman/report.html --reporter-htmlextra-template ./templates/lib/template.hbs"
+                    sh "newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra --reporter-htmlextra-export ./newman/report.html --reporter-htmlextra-template ./templates/lib/dashboard-template.hbs"
                 }
             }
         }
