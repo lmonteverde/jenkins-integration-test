@@ -17,7 +17,7 @@ pipeline {
                     sh 'newman -v'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=$POSTMAN_API_KEY --reporters cli,htmlextra'
+                    sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${POSTMAN_API_KEY} --reporters cli,htmlextra'
                 }
             }
         }
