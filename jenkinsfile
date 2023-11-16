@@ -9,6 +9,9 @@ pipeline {
         stage('Run Postman Collection') {
             steps {
                 script {
+                    // Habilita estilos y scripts en line en el reporte
+                    System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
+
                     // Imprime las versiones de Node.js y Newman
                     sh 'node -v'
                     sh 'newman -v'
