@@ -3,8 +3,6 @@ pipeline {
     
     environment {
         JK_PM_API_KEY = credentials('JK_PM_API_KEY')
-        // POSTMAN_API_KEY = 'PMAT-01HEWT0J6H22HWG6P0TPK0WXRA'
-        // POSTMAN_API_KEY = 'JK_PM_API_KEY'
     }
 
     stages {
@@ -17,7 +15,8 @@ pipeline {
                     sh 'newman -v'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${POSTMAN_API_KEY} --reporters cli,htmlextra'
+                    // sh 'newman run https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${POSTMAN_API_KEY} --reporters cli,htmlextra'
+                    sh "newman run 'https://api.postman.com/collections/21778326-1c7662b4-aaa6-4015-a141-fffe960486aa?access_key=${POSTMAN_API_KEY}' --reporters cli,htmlextra"
                 }
             }
         }
