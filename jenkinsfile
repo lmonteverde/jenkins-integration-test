@@ -15,7 +15,7 @@ pipeline {
                     sh 'rm -f newman/API_Testing-*.html || true'
 
                     // Ejecuta la colección de Postman con Newman y el reporter HTML Extra
-                    sh "newman run https://api.postman.com/collections/21778326-81d19bec-bd03-415a-ad6e-9005c3a7ad43?access_key=${env.JK_PM_API_KEY} --reporters cli,htmlextra"
+                    sh "newman run https://api.postman.com/collections/21778326-81d19bec-bd03-415a-ad6e-9005c3a7ad43?access_key=${env.JK_PM_API_KEY} -e MP_API_TESTING.postman_environment.json  --reporters cli,htmlextra"
                 }
             }
         }
